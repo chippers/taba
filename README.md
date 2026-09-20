@@ -1,4 +1,4 @@
-# `taba` - Rolldown-based TypeScript bundler for Rust
+# `taba`: Rolldown-based TypeScript bundler for Rust
 
 For use in Rust projects needing to naturally interact with TypeScript while
 keeping type safety throughout the stack.
