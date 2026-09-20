@@ -1,2 +1,2 @@
 [alias]
-xtask = "run --profile xtask --package xtask --"
+xtask = "run --package xtask --profile xtask --quiet --"
