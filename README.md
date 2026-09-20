@@ -1,9 +1,9 @@
-# taba: typescript bundler for rust
+# `taba` - Rolldown-based TypeScript bundler for Rust
 
-rolldown-based typescript bundler for use in rust projects needing to naturally
-interact with typescript keeping type safety throughout the stack
+For use in Rust projects needing to naturally interact with TypeScript while
+keeping type safety throughout the stack.
 
-see `cargo xtask --help` for all repo-related cli commands
+See `cargo xtask --help` for all repository commands.
 
 #### License
 
