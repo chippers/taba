@@ -1,0 +1,31 @@
+//! Pinned version of Rolldown for `taba`.
+//!
+//! Rolldown crates don't follow semver or pin exact versions. This crate
+//! exists to give a reliable version of rolldown to build on, along with
+//! its major dependency Oxc.
+
+pub use oxc;
+pub use rolldown;
+pub use rolldown_common;
+pub use rolldown_dev_common;
+pub use rolldown_devtools;
+pub use rolldown_devtools_action;
+pub use rolldown_ecmascript;
+pub use rolldown_ecmascript_utils;
+pub use rolldown_error;
+pub use rolldown_fs;
+pub use rolldown_plugin;
+pub use rolldown_plugin_asset_module;
+pub use rolldown_plugin_chunk_import_map;
+pub use rolldown_plugin_copy_module;
+pub use rolldown_plugin_data_url;
+pub use rolldown_plugin_hmr;
+pub use rolldown_plugin_lazy_compilation;
+pub use rolldown_plugin_oxc_runtime;
+pub use rolldown_plugin_utils;
+pub use rolldown_resolver;
+pub use rolldown_sourcemap;
+pub use rolldown_std_utils;
+pub use rolldown_tracing;
+pub use rolldown_utils;
+pub use string_wizard;
