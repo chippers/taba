@@ -1,52 +1,93 @@
-use std::process::{Command, ExitStatus};
+use std::io::{self, Error};
+use std::process::Command;
 
 use clap::{Args, Parser, Subcommand};
+
+mod uv;
+
 #[derive(Parser)]
-#[command()]
 struct Cli {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     command: Commands,
 }
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Properly format everything, or check if it already is
+    /// Properly format everything, or check if it already is.
     Fmt(Fmt),
 
-    /// Run all linters
+    /// Run all linters.
     Lint,
 
-    /// Run all tests, in every useful combination
+    /// Run all tests, in every useful combination.
     Test(Test),
+
+    /// Pin taba-rolldown to a rolldown release, or see which fit an MSRV.
+    #[command(subcommand)]
+    Rolldown(Rolldown),
+}
+
+fn main() {
+    let cli = Cli::parse();
+
+    let result = match cli.command {
+        Commands::Fmt(fmt) => fmt.run(),
+        Commands::Lint => lint(),
+        Commands::Test(test) => test.run(),
+        Commands::Rolldown(rolldown) => rolldown.run(),
+    };
+
+    if let Err(error) = result {
+        eprintln!("error: {error}");
+        std::process::exit(1);
+    }
+}
+
+/// Run command and turn any non-successful exit into an error.
+fn run(mut command: Command) -> io::Result<()> {
+    let status = command.status()?;
+
+    if status.success() {
+        Ok(())
+    } else {
+        Err(Error::other(format!("{command:?} failed with {status}")))
+    }
 }
 
 #[derive(Args)]
-pub struct Fmt {
+struct Fmt {
     /// Check the formatting instead of writing.
     #[arg(long)]
     check: bool,
 }
 
 impl Fmt {
-    /// Format everything, or check it.
-    fn run(self) -> std::io::Result<ExitStatus> {
+    fn run(self) -> io::Result<()> {
         let mut cmd = Command::new("cargo");
         cmd.arg("+nightly"); // we use nightly-only rustfmt settings
-        cmd.arg("fmt");
-
+        cmd.args(["fmt", "--all"]); // otherwise only the current dir's crate
         if self.check {
             cmd.arg("--check");
         }
 
-        cmd.status()
+        run(cmd)?;
+
+        let mut ruff = vec!["format", "--quiet"];
+        if self.check {
+            ruff.push("--check");
+        }
+
+        uv::opt("ruff", &ruff)
     }
 }
 
-/// Lint everything, failing on any warning.
-fn lint() -> std::io::Result<ExitStatus> {
+fn lint() -> io::Result<()> {
     let mut cmd = Command::new("cargo");
-    cmd.args(["clippy", "--", "-D", "warnings"]);
-    cmd.status()
+    cmd.args(["clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]);
+    run(cmd)?;
+
+    uv::opt("ruff", &["check", "--quiet"])?;
+    uv::opt("ty", &["check"])
 }
 
 #[derive(Args)]
@@ -57,43 +98,43 @@ struct Test {
 }
 
 impl Test {
-    /// Quickly run nextest, then the leftover doctests.
-    fn run(self) -> std::io::Result<ExitStatus> {
+    /// nextest can't run doctests, so `cargo test --doc` runs them after.
+    fn run(self) -> io::Result<()> {
         let mut nextest = Command::new("cargo");
-        nextest.args(["nextest", "run", "--workspace"]);
-
+        nextest.args(["nextest", "run", "--workspace", "--all-targets"]);
         if self.release {
             nextest.arg("--release");
         }
 
-        let nextest = nextest.status()?;
-        if !nextest.success() {
-            return Ok(nextest);
-        }
+        run(nextest)?;
 
-        let mut cmd = Command::new("cargo");
-        cmd.args(["test", "--doc", "--workspace"]);
-
+        let mut doctests = Command::new("cargo");
+        doctests.args(["test", "--doc", "--workspace"]);
         if self.release {
-            cmd.arg("--release");
+            doctests.arg("--release");
         }
 
-        cmd.status()
+        run(doctests)
     }
 }
 
-fn main() -> std::io::Result<()> {
-    let cli = Cli::parse();
+#[derive(Subcommand)]
+enum Rolldown {
+    /// Pin all Rolldown crates to the same version, and related Oxc version.
+    Pin {
+        /// The rolldown version, e.g. `1.2.5`.
+        version: String,
+    },
 
-    let exit = match cli.command {
-        Commands::Fmt(fmt) => fmt.run(),
-        Commands::Lint => lint(),
-        Commands::Test(test) => test.run(),
-    }?;
+    /// List rolldown releases with the oxc each requires and that oxc's MSRV.
+    Msrv,
+}
 
-    if !exit.success() {
-        std::process::exit(exit.code().unwrap_or(1));
+impl Rolldown {
+    fn run(self) -> io::Result<()> {
+        match self {
+            Rolldown::Pin { version } => uv::run("rolldown.py", &["pin", &version]),
+            Rolldown::Msrv => uv::run("rolldown.py", &["msrv"]),
+        }
     }
-
-    Ok(())
 }
