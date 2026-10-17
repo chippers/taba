@@ -2545,6 +2545,7 @@ name = "taba-rolldown"
 version = "0.1.0"
 dependencies = [
  "oxc",
+ "oxc_resolver",
  "rolldown",
  "rolldown_common",
  "rolldown_dev_common",
