@@ -98,23 +98,15 @@ struct Test {
 }
 
 impl Test {
-    /// nextest can't run doctests, so `cargo test --doc` runs them after.
     fn run(self) -> io::Result<()> {
-        let mut nextest = Command::new("cargo");
-        nextest.args(["nextest", "run", "--workspace", "--all-targets"]);
+        let mut test = Command::new("cargo");
+        test.args(["test", "--workspace"]);
+
         if self.release {
-            nextest.arg("--release");
+            test.arg("--release");
         }
 
-        run(nextest)?;
-
-        let mut doctests = Command::new("cargo");
-        doctests.args(["test", "--doc", "--workspace"]);
-        if self.release {
-            doctests.arg("--release");
-        }
-
-        run(doctests)
+        run(test)
     }
 }
 
