@@ -22,6 +22,9 @@ enum Commands {
     /// Run all tests, in every useful combination.
     Test(Test),
 
+    /// Run all checks.
+    Ci,
+
     /// Pin taba-rolldown to a rolldown release, or see which fit an MSRV.
     #[command(subcommand)]
     Rolldown(Rolldown),
@@ -34,6 +37,7 @@ fn main() {
         Commands::Fmt(fmt) => fmt.run(),
         Commands::Lint => lint(),
         Commands::Test(test) => test.run(),
+        Commands::Ci => ci(),
         Commands::Rolldown(rolldown) => rolldown.run(),
     };
 
@@ -113,6 +117,12 @@ impl Test {
 
         run(test)
     }
+}
+
+fn ci() -> io::Result<()> {
+    Fmt { check: true }.run()?;
+    lint()?;
+    Test { release: false }.run()
 }
 
 #[derive(Subcommand)]

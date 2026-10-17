@@ -30,6 +30,4 @@ jobs:
         with:
           cache-python: true
 
-      - run: cargo xtask fmt --check
-      - run: cargo xtask lint
-      - run: cargo xtask test
+      - run: cargo xtask ci
