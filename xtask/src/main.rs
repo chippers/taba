@@ -83,7 +83,7 @@ impl Fmt {
 
 fn lint() -> io::Result<()> {
     let mut cmd = Command::new("cargo");
-    cmd.args(["clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]);
+    cmd.args(["clippy", "--workspace", "--all-targets", "--locked", "--", "-D", "warnings"]);
     run(cmd)?;
 
     uv::opt("ruff", &["check", "--quiet"])?;
@@ -100,7 +100,7 @@ struct Test {
 impl Test {
     fn run(self) -> io::Result<()> {
         let mut test = Command::new("cargo");
-        test.args(["test", "--workspace"]);
+        test.args(["test", "--workspace", "--locked"]);
 
         if self.release {
             test.arg("--release");
