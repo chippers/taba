@@ -1,9 +1,9 @@
-"""Pins taba-rolldown to a rolldown release.
+"""Pins taba-rolldown to a Rolldown release.
 
 Separate script to avoid polluting xtask with heavy dependencies for an
 occasional dev task. Run it through `cargo xtask rolldown`.
 
-All the rolldown crates need to be pinned together, including transitive ones.
+All the Rolldown crates need to be pinned together, including transitive ones.
 """
 
 import json
@@ -30,7 +30,7 @@ def index(crate: str) -> dict:
 
 
 def workspace(version: str) -> set[str]:
-    """Every crate in rolldown's own workspace at `version`."""
+    """Every crate in Rolldown's own workspace at `version`."""
     url = f"https://raw.githubusercontent.com/rolldown/rolldown/v{version}/Cargo.toml"
     with urlopen(url) as response:
         dependencies = tomllib.load(response)["workspace"]["dependencies"]
@@ -42,7 +42,7 @@ def workspace(version: str) -> set[str]:
 
 
 def oxc_requirement(release: dict) -> str | None:
-    """The oxc versions a rolldown release accepts."""
+    """The Oxc versions a Rolldown release accepts."""
     for dependency in release["deps"]:
         if dependency["name"] == "oxc" and dependency["kind"] != "dev":
             return dependency["req"]
@@ -59,7 +59,7 @@ def regenerate(path: Path, lines: list[str]) -> None:
 
 
 def pin(version: str) -> None:
-    """Pin rolldown's crates to `version`, and oxc to what rolldown requires."""
+    """Pin Rolldown's crates to `version`, and Oxc to what Rolldown requires."""
     releases = index("rolldown")
     if version not in releases:
         sys.exit(f"rolldown {version} isn't on crates.io")
@@ -83,7 +83,7 @@ def pin(version: str) -> None:
 
 
 def msrv() -> None:
-    """Print each rolldown release with its oxc's MSRV: rolldown declares none."""
+    """Print each Rolldown release with its Oxc's MSRV: Rolldown declares none."""
     oxc = index("oxc")
     for version, release in index("rolldown").items():
         required = oxc_requirement(release)
