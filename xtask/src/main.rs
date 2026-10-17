@@ -86,6 +86,11 @@ fn lint() -> io::Result<()> {
     cmd.args(["clippy", "--workspace", "--all-targets", "--locked", "--", "-D", "warnings"]);
     run(cmd)?;
 
+    let mut doc = Command::new("cargo");
+    doc.args(["doc", "--workspace", "--no-deps", "--locked"]);
+    doc.env("RUSTDOCFLAGS", "-D warnings");
+    run(doc)?;
+
     uv::opt("ruff", &["check", "--quiet"])?;
     uv::opt("ty", &["check"])
 }
