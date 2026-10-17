@@ -25,7 +25,6 @@ def index(crate: str) -> dict:
         directory = f"{crate[:2]}/{crate[2:4]}"
     with urlopen(f"https://index.crates.io/{directory}/{crate}") as response:
         return {release["vers"]: release for release in map(json.loads, response)}
-    return None
 
 
 def workspace(version: str) -> set[str]:
@@ -76,7 +75,7 @@ def pin(version: str) -> None:
     pins = {"oxc": oxc} | {name: f"={version}" for name in sorted(family)}
     truncate(
         CRATE / "Cargo.toml",
-        "".join(f'{name} = "{pin}"\n' for name, pin in pins.items()),
+        "".join(f'{name} = "{req}"\n' for name, req in pins.items()),
     )
     truncate(CRATE / "src" / "lib.rs", "".join(f"pub use {name};\n" for name in pins))
     print(f"pinned rolldown {version} and oxc {oxc}")
