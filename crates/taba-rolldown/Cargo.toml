@@ -1,6 +1,6 @@
 [package]
 name = "taba-rolldown"
-description = "pinned version of rolldown for taba"
+description = "Pinned version of Rolldown for Taba"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

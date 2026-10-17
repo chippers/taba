@@ -1,4 +1,4 @@
-//! Pinned version of Rolldown for `taba`.
+//! Pinned version of Rolldown for Taba.
 //!
 //! Rolldown crates don't follow semver or pin exact versions. This crate
 //! exists to give a reliable version of rolldown to build on, along with

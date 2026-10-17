@@ -1,4 +1,4 @@
-//! taba's runtime
+//! Taba's runtime
 
 mod error;
 

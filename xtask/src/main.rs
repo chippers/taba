@@ -1,4 +1,4 @@
-//! taba's repo tasks
+//! Taba's repo tasks
 
 use std::io::{self, Error};
 use std::process::Command;
