@@ -1,8 +1,8 @@
 [project]
 name = "xtask"
 version = "0.0.0"
-requires-python = "==3.14.*"
+requires-python = "==3.15.*"
 dependencies = []
 
 [dependency-groups]
-dev = ["ruff>=0.16.10", "ty>=0.0.84"]
+dev = ["ruff", "ty"]
