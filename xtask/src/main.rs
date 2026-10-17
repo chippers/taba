@@ -1,3 +1,5 @@
+//! taba's repo tasks
+
 use std::io::{self, Error};
 use std::process::Command;
 

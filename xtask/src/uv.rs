@@ -19,19 +19,19 @@ fn uv_missing(error: Error) -> Error {
 }
 
 /// `uv run` from any cwd, failing on a stale `uv.lock`.
-pub fn run(command: &str, args: &[&str]) -> io::Result<()> {
+pub(crate) fn run(command: &str, args: &[&str]) -> io::Result<()> {
     crate::run(uv(command, args)).map_err(uv_missing)
 }
 
 /// Ensure `uv` is available.
-pub fn require() -> io::Result<()> {
+pub(crate) fn require() -> io::Result<()> {
     let mut version = Command::new("uv");
     version.arg("--version");
     crate::run(version).map_err(uv_missing)
 }
 
 /// [`run()`], only if `uv` is available.
-pub fn opt(command: &str, args: &[&str]) -> io::Result<()> {
+pub(crate) fn opt(command: &str, args: &[&str]) -> io::Result<()> {
     crate::run(uv(command, args)).or_else(|error| match error.kind() {
         ErrorKind::NotFound => {
             eprintln!("xtask warning: skipping `{command}`: {NEEDS_UV}");
