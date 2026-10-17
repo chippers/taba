@@ -3,15 +3,26 @@ resolver = "3"
 members = ["crates/*", "xtask"]
 default-members = ["crates/*"]
 
+[workspace.dependencies]
+insta = "1.49.0"
+serde_core = "1"
+serde_json = "1"
+
+[workspace.lints.rust]
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+unreachable_pub = "warn"
+unsafe_code = "forbid"
+
+[workspace.lints.rustdoc]
+broken_intra_doc_links = "deny"
+
 [workspace.package]
+version = "0.1.0" # sync public facing crates only
 edition = "2024"
 license = "Apache-2.0 OR MIT"
 authors = ["Chip Reed <chip@chip.sh>"]
 repository = "https://github.com/chippers/taba"
-
-# sync public facing crates only
-version = "0.1.0"
-
 
 [profile.xtask]
 inherits = "dev"
