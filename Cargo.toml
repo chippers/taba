@@ -19,6 +19,7 @@ broken_intra_doc_links = "deny"
 
 [workspace.package]
 version = "0.1.0" # sync public facing crates only
+rust-version = "1.95"
 edition = "2024"
 license = "Apache-2.0 OR MIT"
 authors = ["Chip Reed <chip@chip.sh>"]

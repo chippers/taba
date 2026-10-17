@@ -64,7 +64,7 @@ struct Fmt {
 impl Fmt {
     fn run(self) -> io::Result<()> {
         let mut cmd = Command::new("cargo");
-        cmd.arg("+nightly"); // we use nightly-only rustfmt settings
+        cmd.arg("+nightly-2026-02-28"); // our MSRV's nightly, for nightly-only rustfmt settings
         cmd.args(["fmt", "--all"]); // otherwise only the current dir's crate
         if self.check {
             cmd.arg("--check");
