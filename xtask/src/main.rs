@@ -1,7 +1,9 @@
 //! Taba's repo tasks
 
-use std::io::{self, Error};
-use std::process::Command;
+use std::{
+    io::{self, Error},
+    process::Command,
+};
 
 use clap::{Parser, Subcommand};
 

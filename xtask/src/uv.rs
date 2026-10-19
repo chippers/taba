@@ -1,7 +1,9 @@
 //! [`uv`](https://docs.astral.sh/uv/) handles all Python tooling.
 
-use std::io::{self, Error, ErrorKind};
-use std::process::Command;
+use std::{
+    io::{self, Error, ErrorKind},
+    process::Command,
+};
 
 const NEEDS_UV: &str = "needs uv (https://docs.astral.sh/uv/)";
 

@@ -4,7 +4,7 @@ use_small_heuristics = "Max"
 use_field_init_shorthand = true
 
 # nightly
-imports_granularity = "Module"
+imports_granularity = "Crate"
 group_imports = "StdExternalCrate"
 format_code_in_doc_comments = true
 error_on_line_overflow = true
