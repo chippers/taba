@@ -2533,7 +2533,7 @@ dependencies = [
 
 [[package]]
 name = "taba"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "insta",
  "serde_core",
@@ -2542,7 +2542,7 @@ dependencies = [
 
 [[package]]
 name = "taba-rolldown"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "oxc",
  "oxc_resolver",
