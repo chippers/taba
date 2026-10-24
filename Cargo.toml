@@ -24,3 +24,4 @@ edition = "2024"
 license = "Apache-2.0 OR MIT"
 authors = ["Chip Reed <chip@chip.sh>"]
 repository = "https://github.com/chippers/taba"
+readme = "README.md"
