@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 /// Failed to serialize taba script input.
 #[derive(Debug)]
@@ -10,4 +10,4 @@ impl fmt::Display for Error {
     }
 }
 
-impl std::error::Error for Error {}
+impl core::error::Error for Error {}

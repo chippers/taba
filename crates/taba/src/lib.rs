@@ -1,15 +1,25 @@
 //! Taba's runtime
+#![no_std]
+
+extern crate alloc;
 
 mod error;
 
-use std::fmt::{self, Display, Write};
+use alloc::string::{String, ToString as _};
+use core::fmt::{self, Display, Write};
 
 use serde_core::Serialize;
 
 pub use crate::error::Error;
 
 /// Alias for a `Result` with the error type `taba::Error`.
-pub type Result<T, E = Error> = std::result::Result<T, E>;
+pub type Result<T, E = Error> = core::result::Result<T, E>;
+
+/// What generated code names through taba: a std crate has no `alloc` without `extern crate`.
+#[doc(hidden)]
+pub mod __private {
+    pub use alloc::string::String;
+}
 
 /// The unresolved ("global") block-scoped variable scripts read input from.
 const BLOCK_SCOPED_GLOBAL: &str = "_taba";

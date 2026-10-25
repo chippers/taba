@@ -11,7 +11,7 @@ readme.workspace = true
 
 [dependencies]
 serde_core.workspace = true
-serde_json.workspace = true
+serde_json = { workspace = true, features = ["alloc"] }
 
 [dev-dependencies]
 insta.workspace = true
