@@ -25,5 +25,5 @@ rust-version = "1.95"
 edition = "2024"
 license = "Apache-2.0 OR MIT"
 authors = ["Chip Reed <chip@chip.sh>"]
-repository = "https://github.com/chippers/taba"
+repository = "https://github.com/taba-build/taba"
 readme = "README.md"
