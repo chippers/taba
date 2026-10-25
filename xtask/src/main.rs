@@ -7,6 +7,7 @@ use std::{
 
 use clap::{Parser, Subcommand};
 
+mod mdbook;
 mod uv;
 
 #[derive(Parser)]
@@ -94,13 +95,15 @@ fn lint() -> io::Result<()> {
     run(doc)?;
 
     uv::opt("ruff", &["check", "--quiet"])?;
-    uv::opt("ty", &["check"])
+    uv::opt("ty", &["check"])?;
+    mdbook::build()
 }
 
 fn test() -> io::Result<()> {
     let mut test = Command::new("cargo");
     test.args(["test", "--workspace", "--locked"]);
-    run(test)
+    run(test)?;
+    mdbook::test()
 }
 
 fn ci() -> io::Result<()> {

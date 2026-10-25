@@ -2,6 +2,9 @@
 title = "Taba"
 language = "en"
 
+[build]
+create-missing = false
+
 [output.html]
 preferred-dark-theme = "ayu"
 git-repository-url = "https://github.com/taba-build/taba"
