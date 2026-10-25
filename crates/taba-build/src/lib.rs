@@ -6,7 +6,7 @@ use std::path::Path;
 
 use taba_rolldown::{
     rolldown::{Bundler, BundlerOptions, CodeSplittingMode, InputItem, OutputFormat},
-    rolldown_common::Output,
+    rolldown_common::{AddonOutputOption, Output},
     rolldown_error::EventKind,
 };
 
@@ -17,7 +17,7 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 
 /// Bundles `module` and its imports into one script, the bundle `taba::script` runs.
 ///
-/// The module reads its input from the global `_taba`.
+/// The module reads its input from the global `_taba`. Like any ES module, it runs in strict mode.
 ///
 /// # Errors
 ///
@@ -33,6 +33,9 @@ fn bundle_path(module: &Path) -> Result<String> {
         input: Some(vec![InputItem { name: None, import: import.to_owned() }]),
         format: Some(OutputFormat::Iife),
         code_splitting: Some(CodeSplittingMode::Bool(false)),
+        // Rolldown's `strict` goes above the IIFE, but we need it inside to keep it in effect when
+        // included as part of a larger script.
+        intro: Some(AddonOutputOption::String(Some(r#""use strict";"#.to_owned()))),
         ..BundlerOptions::default()
     };
     let failed = |diagnostics| Error::bundle(module, diagnostics);

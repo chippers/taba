@@ -2,8 +2,9 @@
 
 #[test]
 fn imports_inline_into_one_script() {
-    insta::assert_snapshot!(taba_build::bundle("tests/bundle/main.ts").unwrap(), @r"
+    insta::assert_snapshot!(taba_build::bundle("tests/bundle/main.ts").unwrap(), @r#"
     (function() {
+    	"use strict";
     	//#region tests/bundle/greeting.ts
     	function greeting(name) {
     		return `hello, ${name}`;
@@ -13,7 +14,7 @@ fn imports_inline_into_one_script() {
     	console.log(greeting(_taba.name));
     	//#endregion
     })();
-    ");
+    "#);
 }
 
 #[test]
