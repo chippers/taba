@@ -1,0 +1,7 @@
+[book]
+title = "Taba"
+language = "en"
+
+[output.html]
+preferred-dark-theme = "ayu"
+git-repository-url = "https://github.com/taba-build/taba"
