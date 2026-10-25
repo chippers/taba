@@ -7,6 +7,8 @@ default-members = ["crates/*"]
 insta = "1.49.0"
 serde_core = "1"
 serde_json = "1"
+taba-rolldown = { path = "crates/taba-rolldown", version = "0.0.0" }
+tokio = { version = "1.53.3", features = ["rt"] }
 
 [workspace.lints.rust]
 missing_debug_implementations = "warn"
