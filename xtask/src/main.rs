@@ -89,6 +89,10 @@ fn lint() -> io::Result<()> {
     clippy.args(["clippy", "--workspace", "--all-targets", "--locked", "--", "-D", "warnings"]);
     run(clippy)?;
 
+    let mut no_std = Command::new("cargo");
+    no_std.args(["check", "--package", "taba", "--target", "x86_64-unknown-none", "--locked"]);
+    run(no_std)?;
+
     let mut doc = Command::new("cargo");
     doc.args(["doc", "--workspace", "--no-deps", "--locked"]);
     doc.env("RUSTDOCFLAGS", "-D warnings");
