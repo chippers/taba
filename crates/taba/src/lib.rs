@@ -21,6 +21,32 @@ pub mod __private {
     pub use alloc::string::String;
 }
 
+/// Include `taba-build` output as the named module.
+///
+/// ```ignore
+/// taba::include_scripts!(mod scripts);
+/// let js = scripts::core(&input)?;
+/// ```
+///
+/// Attributes and documentation work fine:
+///
+/// ```ignore
+/// taba::include_scripts!(
+///     /// Some explicit documentation we want to add to the binding's root.
+///     #[forbid(unsafe_code)]
+///     mod scripts;
+/// );
+/// ```
+#[macro_export]
+macro_rules! include_scripts {
+    ($(#[$attribute:meta])* $visibility:vis mod $name:ident $(;)?) => {
+        $(#[$attribute])*
+        $visibility mod $name {
+            ::core::include!(::core::concat!(::core::env!("OUT_DIR"), "/taba/mod.rs"));
+        }
+    };
+}
+
 /// The unresolved ("global") block-scoped variable scripts read input from.
 const BLOCK_SCOPED_GLOBAL: &str = "_taba";
 
